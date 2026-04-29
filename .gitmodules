@@ -1,3 +1,4 @@
 [submodule "unitree_ros"]
 	path = unitree_ros
-	url = https://github.com/unitreerobotics/unitree_ros.git
+	url = https://github.com/tsh9l/unitree_ros.git
+	branch = z1-arm-sim
