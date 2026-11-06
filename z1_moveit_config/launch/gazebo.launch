@@ -7,6 +7,9 @@
   <arg name="world_pose" default="-x 0 -y 0 -z 0 -R 0 -P 0 -Y 0" doc="Pose to spawn the robot at"/>
   <arg name="initial_joint_positions" default=" -J joint1 0 -J joint2 1.1 -J joint3 -1.1 -J joint4 1.5707 -J joint5 0 -J joint6 0" doc="Initial joint configuration of the robot"/>
 
+  <!-- Set to false when the caller manages joint_state_controller in a namespaced controller_manager (e.g. /z1_gazebo) -->
+  <arg name="spawn_joint_state_controller" default="true" />
+
   <!-- Start Gazebo paused to allow the controllers to pickup the initial pose -->
   <include file="$(find gazebo_ros)/launch/empty_world.launch" pass_all_args="true">
     <arg name="paused" value="true"/>
@@ -27,7 +30,7 @@
   <include file="$(dirname)/ros_controllers.launch"/>
 
   <!-- Spawn the Gazebo ROS controllers -->
-  <node name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
+  <node if="$(arg spawn_joint_state_controller)" name="gazebo_controller_spawner" pkg="controller_manager" type="spawner" respawn="false" output="screen" args="joint_state_controller" />
 
   <!-- Given the published joint states, publish tf for the robot links -->
   <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="true" output="screen" />
